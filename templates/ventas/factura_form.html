@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1>Crear nueva factura</h1>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    {{ linea_formset.management_form }}
+    <table>
+      <thead>
+        <tr>
+          <th>Producto</th><th>Cantidad</th><th>Precio</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for lf in linea_formset %}
+        <tr>
+          <td>{{ lf.producto }}</td>
+          <td>{{ lf.cantidad }}</td>
+          <td>{{ lf.precio_unitario }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+
+    <button type="submit">Guardar factura</button>
+  </form>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1>Top Productos</h1>
+  <form method="get" class="form-inline">
+    {{ form.as_p }}
+    <button type="submit">Filtrar</button>
+  </form>
+  <ul>
+  {% for p in productos %}
+    <li>{{ p.nombre }} — Vendidos: {{ p.vendidos }}</li>
+  {% empty %}
+    <li>No hay datos.</li>
+  {% endfor %}
+  </ul>
+{% endblock %}

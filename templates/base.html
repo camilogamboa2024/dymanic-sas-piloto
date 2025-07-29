@@ -1,0 +1,36 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Factura{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <header class="main-header">
+        <div class="container">
+            <h1>Gestión de Facturación</h1>
+            <nav>
+                <ul>
+                  <li><a href="{% url 'inventario:productos' %}">Inventario</a></li>
+                  <li><a href="{% url 'ventas:resumen' %}">Ventas</a></li>
+                  <li><a href="{% url 'reportes:top_productos' %}">Reportes</a></li>
+                </ul>
+            </nav>
+
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 - Sistema de Facturación</p>
+        </div>
+    </footer>
+</body>
+</html>

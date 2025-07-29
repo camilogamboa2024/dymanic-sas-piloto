@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1>Factura #{{ object.pk }}</h1>
+  <p>Cliente: {{ object.cliente }}</p>
+  <p>Fecha: {{ object.fecha }}</p>
+  <h2>Líneas</h2>
+  <ul>
+    {% for linea in object.lineas.all %}
+      <li>
+        {{ linea.producto }} — {{ linea.cantidad }} × {{ linea.precio }}
+      </li>
+    {% empty %}
+      <li>No hay líneas.</li>
+    {% endfor %}
+  </ul>
+  <p><strong>Total:</strong> {{ object.total }}</p>
+{% endblock %}
