@@ -1,0 +1,18 @@
+[
+{
+  "model": "inventario.categoria",
+  "pk": 1,
+  "fields": {
+    "nombre": "General",
+    "descripcion": "Productos genéricos"
+  }
+},
+{
+  "model": "inventario.categoria",
+  "pk": 2,
+  "fields": {
+    "nombre": "Electrónicos",
+    "descripcion": "Equipos y accesorios"
+  }
+}
+]
