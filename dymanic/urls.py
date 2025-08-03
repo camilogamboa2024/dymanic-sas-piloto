@@ -12,11 +12,8 @@ urlpatterns = [
     path("inventario/", include("inventario.urls")),
 
     # Ventas (namespace 'ventas')
-    path(
-        "ventas/",
-        include(("ventas.urls", "ventas"), namespace="ventas"),
-    ),
-
+    path("ventas/", include(("ventas.urls", "ventas"), namespace="ventas")),
+    
     # Reportes (namespace 'reportes')
     path(
         "reportes/",

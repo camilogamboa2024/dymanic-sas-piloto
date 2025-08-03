@@ -51,7 +51,26 @@ class ProductoDetail(LoginRequiredMixin, DetailView):
 class MovimientoCreate(LoginRequiredMixin, CreateView):
     form_class = MovimientoForm
     success_url = reverse_lazy("inventario:productos")
+    template_name = "inventario/movimiento_form.html"
 
     def form_valid(self, form):
         self.object = form.save(usuario=self.request.user)
         return HttpResponseRedirect(self.get_success_url())
+    
+from django.views.generic import UpdateView, DeleteView
+from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin
+from .models import Producto
+from .forms import ProductoForm
+
+class ProductoUpdate(LoginRequiredMixin, UpdateView):
+    model = Producto
+    form_class = ProductoForm
+    template_name = "inventario/producto_form.html"
+    success_url = reverse_lazy("inventario:productos")
+
+class ProductoDelete(LoginRequiredMixin, DeleteView):
+    model = Producto
+    template_name = "inventario/producto_confirm_delete.html"
+    success_url = reverse_lazy("inventario:productos")
+

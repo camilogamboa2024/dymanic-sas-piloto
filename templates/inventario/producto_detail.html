@@ -1,24 +1,30 @@
 {% extends "base.html" %}
+
 {% block content %}
 <h2>{{ object.nombre }} ({{ object.sku }})</h2>
-<p>Categoría: {{ object.categoria }}</p>
-<p>Stock actual: {{ object.stock_actual }}</p>
-<p>Stock mínimo: {{ object.stock_minimo }}</p>
+<p><strong>Categoría:</strong> {{ object.categoria }}</p>
+<p><strong>Stock actual:</strong> {{ object.stock_actual }}</p>
+<p><strong>Stock mínimo:</strong> {{ object.stock_minimo }}</p>
 
 <h3>Movimientos recientes</h3>
-<table border="1" cellpadding="4" cellspacing="0">
-  <tr><th>Fecha</th><th>Tipo</th><th>Cantidad</th><th>Referencia</th></tr>
-  {% for m in movimientos %}
+<table>
+  <thead>
+    <tr><th>Fecha</th><th>Tipo</th><th>Cantidad</th><th>Referencia</th></tr>
+  </thead>
+  <tbody>
+    {% for m in movimientos %}
     <tr>
       <td>{{ m.timestamp|date:"Y-m-d H:i" }}</td>
       <td>{{ m.get_tipo_display }}</td>
       <td>{{ m.cantidad }}</td>
       <td>{{ m.referencia }}</td>
     </tr>
-  {% empty %}
+    {% empty %}
     <tr><td colspan="4">Sin movimientos.</td></tr>
-  {% endfor %}
+    {% endfor %}
+  </tbody>
 </table>
 
 <a href="{% url 'inventario:movimiento_create' %}">Registrar movimiento</a>
 {% endblock %}
+

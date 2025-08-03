@@ -1,9 +1,13 @@
 {% extends "base.html" %}
+
 {% block content %}
-<h1>Registrar movimiento</h1>
-<form method="post">
+<h1 class="title">Registrar movimiento</h1>
+
+<form method="post" novalidate class="form-movimiento">
   {% csrf_token %}
   {{ form.as_p }}
-  <button type="submit">Guardar</button>
+  <button type="submit" class="btn-submit">Guardar</button>
 </form>
 {% endblock %}
+
+

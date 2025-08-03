@@ -1,17 +1,93 @@
 {% extends "base.html" %}
 {% block content %}
-  <h1>Factura #{{ object.pk }}</h1>
-  <p>Cliente: {{ object.cliente }}</p>
-  <p>Fecha: {{ object.fecha }}</p>
-  <h2>Líneas</h2>
-  <ul>
-    {% for linea in object.lineas.all %}
-      <li>
-        {{ linea.producto }} — {{ linea.cantidad }} × {{ linea.precio }}
-      </li>
-    {% empty %}
-      <li>No hay líneas.</li>
-    {% endfor %}
-  </ul>
-  <p><strong>Total:</strong> {{ object.total }}</p>
+<style>
+  .factura-container {
+    max-width: 700px;
+    margin: 20px auto;
+    font-family: Arial, sans-serif;
+    background: #fff;
+    padding: 20px 30px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  }
+  .factura-header {
+    text-align: center;
+    margin-bottom: 25px;
+  }
+  .factura-header h1 {
+    margin: 0;
+    font-size: 28px;
+    color: #333;
+  }
+  .factura-info p {
+    font-size: 16px;
+    color: #555;
+    margin: 4px 0;
+  }
+  table.factura-lineas {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  table.factura-lineas th, table.factura-lineas td {
+    border: 1px solid #ccc;
+    padding: 8px 12px;
+    text-align: left;
+  }
+  table.factura-lineas th {
+    background-color: #f4f4f4;
+    color: #333;
+  }
+  table.factura-lineas tbody tr:nth-child(even) {
+    background-color: #fafafa;
+  }
+  .factura-total {
+    margin-top: 20px;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: right;
+  }
+</style>
+
+<div class="factura-container">
+  <div class="factura-header">
+    <h1>Factura #{{ object.pk }}</h1>
+  </div>
+
+  <div class="factura-info">
+    <p><strong>Cliente:</strong> {{ object.cliente }}</p>
+    <p><strong>Fecha:</strong> {{ object.fecha }}</p>
+  </div>
+
+  <table class="factura-lineas">
+    <thead>
+      <tr>
+        <th>Producto</th>
+        <th>Cantidad</th>
+        <th>Precio</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for linea in object.lineas.all %}
+        <tr>
+          <td>{{ linea.producto }}</td>
+          <td>{{ linea.cantidad }}</td>
+          <td>${{ linea.precio }}</td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="3">No hay líneas.</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <div class="factura-total">
+    Total: ${{ object.total }}
+  </div>
+</div>
 {% endblock %}
+
+
+

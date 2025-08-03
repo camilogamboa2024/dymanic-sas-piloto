@@ -19,6 +19,9 @@ def crear_factura(*, cliente, line_items, usuario=None):
     total = Decimal("0")
 
     for item in line_items:
+        # Evitar error si 'factura' viene en item
+        item.pop('factura', None)  
+        
         LineaVenta.objects.create(factura=factura, **item)
         total += item["precio"] * item["cantidad"]
 
@@ -34,3 +37,4 @@ def crear_factura(*, cliente, line_items, usuario=None):
     factura.total = total
     factura.save()
     return factura
+

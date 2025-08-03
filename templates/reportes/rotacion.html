@@ -1,23 +1,46 @@
 {% extends "base.html" %}
+{% load static %}
+
 {% block content %}
-  <h1>Rotación de Inventario</h1>
-  <form method="get" class="form-inline">
-    {{ form.as_p }}
-    <button type="submit">Calcular</button>
-  </form>
-  <table>
-    <thead>
-      <tr><th>Producto</th><th>Rotación</th></tr>
-    </thead>
-    <tbody>
-    {% for p in productos %}
-      <tr>
-        <td>{{ p.nombre }}</td>
-        <td>{{ p.rotacion|floatformat:2 }}</td>
-      </tr>
-    {% empty %}
-      <tr><td colspan="2">No hay datos.</td></tr>
-    {% endfor %}
-    </tbody>
-  </table>
+  <h2 style="text-align:center; font-weight:bold;">Rotación de Inventario</h2>
+
+  <div style="max-width: 400px; margin: 0 auto; background: #f4f4f4; padding: 1.5rem; border-radius: 8px;">
+    <form method="get">
+      <div>
+        <label for="id_inicio"><strong>Fecha inicio:</strong></label>
+        {{ form.inicio }}
+      </div>
+      <div style="margin-top: 1rem;">
+        <label for="id_fin"><strong>Fecha fin:</strong></label>
+        {{ form.fin }}
+      </div>
+      <div style="text-align: center; margin-top: 1rem;">
+        <button type="submit" class="btn btn-primary">Calcular</button>
+      </div>
+    </form>
+  </div>
+
+  <div style="margin-top: 2rem;">
+    {% if productos %}
+      <table style="width: 100%; max-width: 600px; margin: 0 auto; border-collapse: collapse;">
+        <thead>
+          <tr style="background: #007bff; color: white;">
+            <th style="padding: 10px;">Producto</th>
+            <th style="padding: 10px;">Rotación</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for p in productos %}
+          <tr style="background: #f8f9fa; text-align: center;">
+            <td style="padding: 8px;">{{ p.nombre }}</td>
+            <td style="padding: 8px;">{{ p.rotacion|floatformat:2 }}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p style="text-align:center; margin-top: 2rem;">No hay productos con rotación en este periodo.</p>
+    {% endif %}
+  </div>
 {% endblock %}
+

@@ -1,15 +1,21 @@
 {% extends "base.html" %}
+{% block title %}Top Productos Vendidos{% endblock %}
+
 {% block content %}
-  <h1>Top Productos</h1>
-  <form method="get" class="form-inline">
+<div class="top-productos">
+  <h1>Top Productos Más Vendidos</h1>
+
+  <form method="get" class="filtro-form">
     {{ form.as_p }}
-    <button type="submit">Filtrar</button>
+    <button type="submit" class="btn">Filtrar</button>
   </form>
-  <ul>
-  {% for p in productos %}
-    <li>{{ p.nombre }} — Vendidos: {{ p.vendidos }}</li>
-  {% empty %}
-    <li>No hay datos.</li>
-  {% endfor %}
+
+  <ul class="lista-productos">
+    {% for p in productos %}
+      <li><strong>{{ p.nombre }}</strong> — Vendidos: {{ p.vendidos }}</li>
+    {% empty %}
+      <li>No hay productos registrados.</li>
+    {% endfor %}
   </ul>
+</div>
 {% endblock %}

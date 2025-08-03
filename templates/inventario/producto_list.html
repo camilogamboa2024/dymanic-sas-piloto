@@ -1,26 +1,50 @@
 {% extends "base.html" %}
 {% block content %}
-<h1 class="text-xl font-bold">Productos</h1>
+  <h1 class="text-2xl font-bold mb-4">Productos</h1>
 
-<a href="{% url 'inventario:producto_create' %}">+ Nuevo producto</a>
+  <a href="{% url 'inventario:producto_create' %}" class="inline-block bg-blue-600 text-white px-4 py-2 rounded mb-4 hover:bg-blue-700">
+    + Nuevo producto
+  </a>
 
-<table border="1" cellpadding="4" cellspacing="0">
-  <thead>
-    <tr>
-      <th>SKU</th><th>Nombre</th><th>Stock</th><th>Mínimo</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for producto in object_list %}
-      <tr>
-        <td>{{ producto.sku }}</td>
-        <td><a href="{% url 'inventario:producto_detail' producto.pk %}">{{ producto.nombre }}</a></td>
-        <td>{{ producto.stock_actual }}</td>
-        <td>{{ producto.stock_minimo }}</td>
-      </tr>
-    {% empty %}
-      <tr><td colspan="4">Sin productos aún.</td></tr>
-    {% endfor %}
-  </tbody>
-</table>
+  <div class="overflow-x-auto">
+    <table class="min-w-full border border-gray-300 divide-y divide-gray-200">
+      <thead class="bg-gray-100">
+        <tr>
+          <th class="px-4 py-2 text-left">SKU</th>
+          <th class="px-4 py-2 text-left">Nombre</th>
+          <th class="px-4 py-2 text-right">Stock</th>
+          <th class="px-4 py-2 text-right">Mínimo</th>
+          <th class="px-4 py-2 text-center">Acciones</th>  <!-- Nueva columna -->
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-100">
+        {% for producto in object_list %}
+          <tr class="hover:bg-gray-50">
+            <td class="px-4 py-2">{{ producto.sku }}</td>
+            <td class="px-4 py-2">
+              <a href="{% url 'inventario:producto_detail' producto.pk %}" class="text-blue-600 hover:underline">
+                {{ producto.nombre }}
+              </a>
+            </td>
+            <td class="px-4 py-2 text-right">{{ producto.stock_actual }}</td>
+            <td class="px-4 py-2 text-right">{{ producto.stock_minimo }}</td>
+            <td class="px-4 py-2 text-center">
+              <a href="{% url 'inventario:producto_update' producto.pk %}" class="text-yellow-600 hover:text-yellow-800 mr-3">
+                ✏️ Editar
+              </a>
+              <a href="{% url 'inventario:producto_delete' producto.pk %}" class="text-red-600 hover:text-red-800 btn-eliminar">
+                🗑️ Eliminar
+              </a>
+            
+            </td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="5" class="px-4 py-4 text-center text-gray-500">Sin productos aún.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 {% endblock %}
+

@@ -1,15 +1,30 @@
-<!doctype html>
+{% load static %}
+<!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8">
-  <title>Iniciar sesión</title>
+  <meta charset="UTF-8" />
+  <title>Dymanic SAS</title>
+
+  <!-- Enlaza correctamente el archivo de estilos -->
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
 </head>
 <body>
-  <h2>Ingresar</h2>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Entrar</button>
-  </form>
+  <main class="container">
+    <!-- Imagen del logo con clase para animación -->
+    <img src="{% static '/images/dynamic_sas.jpg' %}" alt="Logo" class="logo">
+
+    <h2>Ingresar</h2>
+
+    <form method="post" novalidate>
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Entrar</button>
+    </form>
+  </main>
+
+  <!-- JS opcional -->
+  <script src="{% static 'js/main.js' %}"></script>
 </body>
 </html>
+
+

@@ -1,9 +1,15 @@
 {% extends "base.html" %}
+{% block title %}Nuevo Producto{% endblock %}
+
 {% block content %}
-<h1>{{ view.object|default:'Nuevo producto' }}</h1>
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Guardar</button>
-</form>
+<div class="form-container">
+  <h1>Registrar nuevo producto</h1>
+  <form method="post" novalidate>
+    {% csrf_token %}
+    <div class="form-group">
+      {{ form.as_p }}
+    </div>
+    <button type="submit" class="btn">Guardar</button>
+  </form>
+</div>
 {% endblock %}

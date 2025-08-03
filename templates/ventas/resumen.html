@@ -1,7 +1,37 @@
 {% extends "base.html" %}
+{% load static %}
+
 {% block content %}
-  <h1>Resumen de ventas para {{ target }}</h1>
-  <p>Total facturas: {{ total_facturas }}</p>
-  <p>Total unidades vendidas: {{ total_unidades }}</p>
-  <p>Total recaudado: {{ total_monto }}</p>
+  <h2>Resumen de Ventas</h2>
+
+  <form method="get" class="filtro-form">
+    <label for="date">Fecha:</label>
+    <input type="date" id="date" name="date" value="{{ target }}">
+    <button type="submit" class="btn">Filtrar</button>
+  </form>
+
+  <table class="styled-table">
+    <thead>
+      <tr>
+        <th>Fecha</th>
+        <th>Producto</th>
+        <th>Cantidad</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for venta in ventas %}
+      <tr>
+        <td>{{ venta.fecha }}</td>
+        <td>{{ venta.producto }}</td>
+        <td>{{ venta.cantidad }}</td>
+        <td>${{ venta.total|floatformat:2 }}</td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="4">No hay ventas registradas.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
 {% endblock %}
+
+

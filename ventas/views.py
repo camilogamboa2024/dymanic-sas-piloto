@@ -4,17 +4,15 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView, TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.core.exceptions import ValidationError
-from django.shortcuts import render
-
 from .models import Factura
 from .forms import FacturaForm, LineaFormSet
 from .services import crear_factura
+from django.db.models import Sum, F, ExpressionWrapper, DecimalField
+from datetime import date
 
 
+# 1. Vista para crear facturas
 class FacturaCreate(LoginRequiredMixin, CreateView):
-    """
-    Vista para crear una nueva factura con su formset de líneas.
-    """
     model = Factura
     form_class = FacturaForm
     template_name = "ventas/factura_form.html"
@@ -32,9 +30,15 @@ class FacturaCreate(LoginRequiredMixin, CreateView):
             )
 
         try:
+            # 🔁 Limpiamos cada línea para evitar duplicados de 'factura'
+            cleaned_items = []
+            for item in linea_formset.cleaned_data:
+                item.pop('factura', None)  # importante
+                cleaned_items.append(item)
+
             factura = crear_factura(
                 cliente=form.cleaned_data["cliente"],
-                line_items=linea_formset.cleaned_data,
+                line_items=cleaned_items,
                 usuario=self.request.user,
             )
         except ValidationError as e:
@@ -46,40 +50,51 @@ class FacturaCreate(LoginRequiredMixin, CreateView):
         return HttpResponseRedirect(self.get_success_url(factura))
 
     def get_success_url(self, factura=None):
-        # Si pasamos la factura recién creada, redirigimos a su detalle
         if factura:
             return factura.get_absolute_url()
-        # Fallback
         return reverse_lazy("ventas:factura_list")
 
 
+# 2. Vista detalle de factura
 class FacturaDetail(LoginRequiredMixin, DetailView):
-    """
-    Vista para mostrar el detalle de una factura.
-    """
     model = Factura
     template_name = "ventas/factura_detail.html"
 
 
+# 3. Vista de resumen de ventas
 class VentasResumen(PermissionRequiredMixin, TemplateView):
-    """
-    Vista de resumen diario de ventas.
-    Requiere el permiso 'ventas.view_resumen'.
-    """
     permission_required = "ventas.view_resumen"
     template_name = "ventas/resumen.html"
 
     def get_context_data(self, **kwargs):
-        from django.db.models import Sum
-        from datetime import date
-
         ctx = super().get_context_data(**kwargs)
         target = self.request.GET.get("date") or date.today().isoformat()
-        qs = Factura.objects.filter(fecha=target)
-        ctx.update({
-            "target": target,
-            "total_facturas": qs.count(),
-            "total_unidades": qs.aggregate(total=Sum("lineas__cantidad"))["total"] or 0,
-            "total_monto": qs.aggregate(total=Sum("total"))["total"] or Decimal("0"),
-        })
+        facturas = Factura.objects.filter(fecha=target)
+
+        ctx["target"] = target
+        ctx["total_facturas"] = facturas.count()
+        ctx["total_unidades"] = facturas.aggregate(total=Sum("lineas__cantidad"))["total"] or 0
+
+        total_monto = facturas.aggregate(
+            total=Sum(
+                ExpressionWrapper(
+                    F("lineas__cantidad") * F("lineas__precio"),
+                    output_field=DecimalField()
+                )
+            )
+        )["total"] or 0
+
+        ctx["total_monto"] = total_monto
+
+        ventas = []
+        for factura in facturas:
+            for linea in factura.lineas.all():
+                ventas.append({
+                    "fecha": factura.fecha,
+                    "producto": linea.producto.nombre,
+                    "cantidad": linea.cantidad,
+                    "total": linea.cantidad * linea.precio,
+                })
+
+        ctx["ventas"] = ventas
         return ctx

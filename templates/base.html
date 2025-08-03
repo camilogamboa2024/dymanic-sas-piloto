@@ -2,35 +2,60 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>{% block title %}Factura{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <meta charset="UTF-8" />
+    <title>{% block title %}Dymanic SAS{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
 </head>
 <body>
+
+    <!-- ✅ Aquí va tu header personalizado -->
     <header class="main-header">
         <div class="container">
-            <h1>Gestión de Facturación</h1>
+            {% if request.resolver_match.url_name != "login" %}
+                <div class="logo-nombre">
+                    <img src="{% static 'images/dynamic_sas.jpg' %}" alt="Logo Dymanic SAS" class="logo">
+                    <h1 class="nombre-empresa">Dymanic SAS</h1>
+                </div>
+            {% endif %}
+
             <nav>
                 <ul>
-                  <li><a href="{% url 'inventario:productos' %}">Inventario</a></li>
-                  <li><a href="{% url 'ventas:resumen' %}">Ventas</a></li>
-                  <li><a href="{% url 'reportes:top_productos' %}">Reportes</a></li>
+                    <li><a href="{% url 'inventario:productos' %}">Inventario</a></li>
+                    <li><a href="{% url 'ventas:resumen' %}">Ventas</a></li>
+                    <li><a href="{% url 'reportes:top_productos' %}">Reportes</a></li>
                 </ul>
             </nav>
 
-            </nav>
+            <div class="user-session">
+                {% if user.is_authenticated %}
+                    <p>
+                        Hola, <strong>{{ user.username }}</strong> |
+                        <a href="{% url 'logout' %}?next={{ request.path }}">Cerrar sesión</a>
+                    </p>
+                {% else %}
+                    <a href="{% url 'login' %}?next={{ request.path }}">Iniciar sesión</a>
+                {% endif %}
+            </div>
         </div>
     </header>
 
+    <!-- Contenido principal -->
     <main class="container">
-        {% block content %}
-        {% endblock %}
+        {% block content %}{% endblock %}
     </main>
 
+    <!-- Footer -->
     <footer class="footer">
         <div class="container">
             <p>&copy; 2025 - Sistema de Facturación</p>
         </div>
     </footer>
+
+    <script src="{% static 'js/main.js' %}"></script>
 </body>
 </html>
+
+
+
+
+
