@@ -29,9 +29,6 @@
             <td class="px-4 py-2 text-right">{{ producto.stock_actual }}</td>
             <td class="px-4 py-2 text-right">{{ producto.stock_minimo }}</td>
             <td class="px-4 py-2 text-center">
-              <a href="{% url 'inventario:producto_update' producto.pk %}" class="text-yellow-600 hover:text-yellow-800 mr-3">
-                ✏️ Editar
-              </a>
               <a href="{% url 'inventario:producto_delete' producto.pk %}" class="text-red-600 hover:text-red-800 btn-eliminar">
                 🗑️ Eliminar
               </a>

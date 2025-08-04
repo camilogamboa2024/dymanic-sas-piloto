@@ -43,8 +43,10 @@
 ### 1 – Clona el repositorio
 
 ```bash
-git clone https://github.com/camilogamboa2024/dymanic-sas.git
-cd dymanic-sas
+git clone https://github.com/camilogamboa2024/dymanic-sas-piloto.git
+para ver la lista "ls" 
+cd dymanic-sas-piloto
+
 ```
 
 ### 2 – Crea y activa un entorno virtual
@@ -53,7 +55,8 @@ cd dymanic-sas
 | ---------------------- | ----------------------------------------------------------------------------------------------- |
 | **Linux/macOS**        | `python3 -m venv venv && source venv/bin/activate`                                              |
 | **Windows CMD**        | `python -m venv venv && venv\Scripts\activate.bat`                                              |
-| **Windows PowerShell** | 1️⃣ `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass`  2️⃣ `./venv/Scripts/Activate` |
+| **Windows PowerShell** | 1️⃣ `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass` o  2️⃣ `./venv/Scripts/Activate` |
+| **git bash**        | `python -m venv venv && source venv/Scripts/activate`                                              
 
 > ⚠️ En Windows evita carpetas sincronizadas (p.ej. OneDrive) para reducir problemas de permisos.
 
@@ -61,6 +64,11 @@ cd dymanic-sas
 
 ```bash
 pip install -r requirements.txt
+pip install django-csp
+code .
+```
+```
+agregar punto al archivo env para migraciones el archivo env se encuentra en la raiz
 ```
 
 ### 4 – Aplica migraciones y crea un superusuario

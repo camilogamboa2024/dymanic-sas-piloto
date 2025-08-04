@@ -1,0 +1,4 @@
+USE_POSTGRES=False
+SECRET_KEY=clave-super-secreta
+DEBUG=True
+ALLOWED_HOSTS=127.0.0.1,localhost
